@@ -1,0 +1,10 @@
+hydrogram
+tgcrypto
+quart
+uvicorn
+aiohttp
+requests
+python-dotenv
+gunicorn
+flask
+pymongo
