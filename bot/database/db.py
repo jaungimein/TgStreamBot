@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from config import Telegram
+from bot.config import Telegram
 # MongoDB setup
 mongo = MongoClient(Telegram.MONGO_URI)
 db = mongo["sharing_bot"]
