@@ -13,10 +13,12 @@ from bot.modules.decorators import verify_user
 from bot.modules.static import *
 from datetime import datetime, timezone, timedelta
 from bot.database.db import *
-
+from collections import defaultdict
 
 user_data = {}
 TOKEN_VALIDITY_SECONDS = 24 * 60 * 60  # 24 hours
+MAX_FILES_PER_SESSION = 10   
+user_file_count = defaultdict(int)
 
 @TelegramBot.on_message(
     filters.private
@@ -42,7 +44,7 @@ async def handle_user_file(_, msg: Message):
 
     if (msg.document and 'video' in msg.document.mime_type) or msg.video:
         # Check if user is authorized
-        if not is_user_authorized(sender_id):
+        if user_id != Telegram.OWNER_ID and not is_user_authorized(sender_id):
             now = datetime.now(timezone.utc)
             token_doc = tokens_col.find_one({
                     "user_id": sender_id,
@@ -58,6 +60,10 @@ async def handle_user_file(_, msg: Message):
                 )
             ))
             await auto_delete_message(msg, reply)
+            
+        # Limit file access per session
+        if user_id != Telegram.OWNER_ID and user_file_count[user_id] >= MAX_FILES_PER_SESSION:
+            await safe_api_call(message.reply_text("❌ You have reached the maximum of 10 files per session."))
             return
 
         stream_link = f'{Server.BASE_URL}/stream/{file_id}?code={secret_code}'
@@ -89,6 +95,7 @@ async def handle_user_file(_, msg: Message):
                 ]
             )
         )
+        user_file_count[user_id] += 1
 
 async def auto_delete_message(user_message, bot_message):
     try:
