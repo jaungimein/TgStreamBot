@@ -62,8 +62,8 @@ async def handle_user_file(_, msg: Message):
             await auto_delete_message(msg, reply)
             
         # Limit file access per session
-        if sender_id != Telegram.OWNER_ID and user_file_count[user_id] >= MAX_FILES_PER_SESSION:
-            await safe_api_call(message.reply_text("❌ You have reached the maximum of 10 files per session."))
+        if sender_id != Telegram.OWNER_ID and user_file_count[sender_id] >= MAX_FILES_PER_SESSION:
+            await safe_api_call(msg.reply_text("❌ You have reached the maximum of 10 files per session."))
             return
 
         stream_link = f'{Server.BASE_URL}/stream/{file_id}?code={secret_code}'
@@ -95,7 +95,7 @@ async def handle_user_file(_, msg: Message):
                 ]
             )
         )
-        user_file_count[user_id] += 1
+    user_file_count[sender_id] += 1
 
 async def auto_delete_message(user_message, bot_message):
     try:
