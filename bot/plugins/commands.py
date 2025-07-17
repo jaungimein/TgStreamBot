@@ -9,10 +9,10 @@ from bot.plugins.files import add_user, authorize_user, is_token_valid, safe_api
 @TelegramBot.on_message(filters.command(['start', 'help']) & filters.private)
 @verify_user
 async def start_command(_, msg: Message):
+    reply = None
     sender_id = msg.from_user.id
     user = msg.from_user
     user_name = user.first_name or user.last_name or (user.username and f"@{user.username}") or "USER"
-    reply = None
     add_user(sender_id)
     
     # --- Token-based authorization ---
@@ -25,18 +25,20 @@ async def start_command(_, msg: Message):
             reply = await safe_api_call(msg.reply_text("❌ Invalid or expired token. Please get a new link."))
         return
     
-    await msg.reply(
+    reply = await msg.reply(
         text = WelcomeText % {'first_name': msg.from_user.first_name},
         quote = True
     )
-    await auto_delete_message(msg, reply)
+    if reply:
+        await auto_delete_message(msg, reply)
 
 @TelegramBot.on_message(filters.command('privacy') & filters.private)
 @verify_user
 async def privacy_command(_, msg: Message):
     reply = None
     reply = await msg.reply(text=PrivacyText, quote=True, disable_web_page_preview=True)
-    await auto_delete_message(msg, reply)
+    if reply:
+        await auto_delete_message(msg, reply)
 
 @TelegramBot.on_message(filters.command('log') & filters.chat(Telegram.OWNER_ID))
 async def log_command(_, msg: Message):
