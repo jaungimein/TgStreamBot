@@ -96,6 +96,7 @@ async def handle_user_file(_, msg: Message):
             )
         )
     user_file_count[sender_id] += 1
+    await msg.delete()
 
 async def auto_delete_message(user_message, bot_message):
     try:
