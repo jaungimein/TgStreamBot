@@ -26,6 +26,7 @@ async def manage_callback(bot, q: CallbackQuery):
             return await q.answer(InvalidQueryText, show_alert=True)
         
         await message.delete()
+        await q.message.delete() 
         await q.answer(LinkRevokedText, show_alert=True)
     else:
         await q.answer(InvalidQueryText, show_alert=True)
