@@ -42,7 +42,7 @@ LOGGER_CONFIG_JSON = {
     },
     'loggers': {
         'uvicorn': {
-            'level': 'INFO',
+            'level': 'WARNING',
             'handlers': ['file_handler', 'stream_handler']
         },
         'uvicorn.error': {
@@ -50,11 +50,11 @@ LOGGER_CONFIG_JSON = {
             'handlers': ['file_handler', 'stream_handler']
         },
         'bot': {
-            'level': 'INFO',
+            'level': 'WARNING',
             'handlers': ['file_handler', 'stream_handler']
         },
         'hydrogram': {
-            'level': 'INFO',
+            'level': 'WARNING',
             'handlers': ['file_handler', 'stream_handler']
         }
     }
