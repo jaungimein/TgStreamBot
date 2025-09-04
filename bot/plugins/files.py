@@ -60,6 +60,7 @@ async def handle_user_file(_, msg: Message):
                 )
             ))
             await auto_delete_message(msg, reply)
+            return 
             
         # Limit file access per session
         if sender_id != Telegram.OWNER_ID and user_file_count[sender_id] >= MAX_FILES_PER_SESSION:
