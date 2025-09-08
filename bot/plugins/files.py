@@ -40,7 +40,9 @@ async def handle_user_file(_, msg: Message):
         caption=f'||{secret_code}/{sender_id}||'
     )
     file_id = file.id
+    media = msg.document or msg.video or msg.photo or msg.audio
     dl_link = f'{Server.BASE_URL}/dl/{file_id}?code={secret_code}'
+    f_name = f"{msg.caption}" if msg.caption else f"{media.file_name}"
 
     if (msg.document and 'video' in msg.document.mime_type) or msg.video:
         # Check if user is authorized
@@ -69,7 +71,7 @@ async def handle_user_file(_, msg: Message):
 
         stream_link = f'{Server.BASE_URL}/stream/{file_id}?code={secret_code}'
         await msg.reply(
-            text=MediaLinksText % {'dl_link': dl_link, 'stream_link': stream_link},
+            text=MediaLinksText % {'f_name': f_name, 'dl_link': dl_link, 'stream_link': stream_link},
             quote=True,
             reply_markup=InlineKeyboardMarkup(
                 [
@@ -85,7 +87,7 @@ async def handle_user_file(_, msg: Message):
         )
     else:
         await msg.reply(
-            text=FileLinksText % {'dl_link': dl_link},
+            text=FileLinksText % {'f_name': f_name, 'dl_link': dl_link},
             quote=True,
             reply_markup=InlineKeyboardMarkup(
                 [

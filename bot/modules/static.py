@@ -29,12 +29,16 @@ __By using this bot, you agree to this policy.__
 
 FileLinksText = \
 """
+**File Name:**
+`%(f_name)s`
 **Download Link:**
 `%(dl_link)s`
 """
 
 MediaLinksText = \
 """
+**File Name:**
+`%(f_name)s`
 **Download Link:**
 `%(dl_link)s`
 **Stream Link:**
