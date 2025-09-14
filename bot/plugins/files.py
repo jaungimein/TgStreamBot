@@ -78,8 +78,10 @@ async def handle_user_file(_, msg: Message):
                     [
                         InlineKeyboardButton('Download', url=dl_link),
                         InlineKeyboardButton('Stream', url=stream_link),
-                        [InlineKeyboardButton("Open in VLC (PC)", url=f"vlc://{dl_link}")],
-                        [InlineKeyboardButton("Open in MX Player (Mobile)", url=f"intent:{dl_link}#Intent;package=com.mxtech.videoplayer.pro;S.title=Video;end")]
+                    ],
+                    [
+                        InlineKeyboardButton("Open in VLC (PC)", url=f"vlc://{dl_link}"),
+                        InlineKeyboardButton("Open in MX Player (Mobile)", url=f"intent:{dl_link}#Intent;package=com.mxtech.videoplayer.pro;S.title=Video;end")
                     ],
                     [
                         InlineKeyboardButton('Revoke', callback_data=f'rm_{file_id}_{secret_code}')
